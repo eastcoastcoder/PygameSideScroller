@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pygame Side Scroller</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: #1a1a1a;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      font-family: Arial, sans-serif;
+      color: white;
+    }
+
+    #container {
+      text-align: center;
+      max-width: 90%;
+    }
+
+    h1 {
+      margin: 20px 0;
+      color: #4a90e2;
+    }
+
+    #pygame-canvas {
+      border: 3px solid #4a90e2;
+      border-radius: 8px;
+      box-shadow: 0 4px 20px rgba(74, 144, 226, 0.3);
+    }
+
+    .controls {
+      margin: 20px 0;
+      padding: 20px;
+      background-color: #2a2a2a;
+      border-radius: 8px;
+      max-width: 800px;
+    }
+
+    .controls h2 {
+      margin-top: 0;
+      color: #4a90e2;
+    }
+
+    .controls-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 10px;
+      text-align: left;
+    }
+
+    .control-item {
+      padding: 8px;
+      background-color: #333;
+      border-radius: 4px;
+    }
+
+    .control-key {
+      color: #4a90e2;
+      font-weight: bold;
+    }
+
+    #loading {
+      margin: 20px 0;
+      font-size: 1.2em;
+    }
+
+    .spinner {
+      border: 4px solid rgba(74, 144, 226, 0.3);
+      border-top: 4px solid #4a90e2;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      animation: spin 1s linear infinite;
+      margin: 20px auto;
+    }
+
+    @keyframes spin {
+      0% {
+        transform: rotate(0deg);
+      }
+
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div id="container">
+    <h1>Pygame Side Scroller</h1>
+
+    <div id="loading">
+      <div class="spinner"></div>
+      <p>Loading game...</p>
+    </div>
+
+    <canvas id="pygame-canvas" style="display: none;"></canvas>
+
+    <div class="controls">
+      <h2>Controls</h2>
+      <div class="controls-grid">
+        <div class="control-item">
+          <span class="control-key">W / ↑</span> - Jump
+        </div>
+        <div class="control-item">
+          <span class="control-key">A / ←</span> - Move Left
+        </div>
+        <div class="control-item">
+          <span class="control-key">D / →</span> - Move Right
+        </div>
+        <div class="control-item">
+          <span class="control-key">SPACE</span> - Attack
+        </div>
+        <div class="control-item">
+          <span class="control-key">G</span> - Switch Weapon
+        </div>
+        <div class="control-item">
+          <span class="control-key">F</span> - Sword Position
+        </div>
+        <div class="control-item">
+          <span class="control-key">ESC</span> - Quit
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/gh/pygame-web/pygbag@0.8.7/static/pythons.js"></script>
+  <script>
+    // Show canvas and hide loading when game starts
+    window.addEventListener('load', function () {
+      setTimeout(function () {
+        const loading = document.getElementById('loading');
+        const canvas = document.getElementById('pygame-canvas');
+        if (canvas.width > 0) {
+          loading.style.display = 'none';
+          canvas.style.display = 'block';
+        }
+      }, 3000);
+    });
+  </script>
+</body>
+
+</html>

@@ -14,8 +14,18 @@ from Gun import Gun
 
 __author__ = "Joshua Sonnenberg and Ethan Richardson"
 
-pygame.mixer.init(44100, -16, 2, 2048)
-player_death_sound = pygame.mixer.Sound('Player_Death.wav')
+# Lazy load sound to avoid blocking browser initialization
+player_death_sound = None
+
+def _get_death_sound():
+    """Lazily load death sound."""
+    global player_death_sound
+    if player_death_sound is None:
+        try:
+            player_death_sound = pygame.mixer.Sound('Player_Death.wav')
+        except:
+            player_death_sound = type('obj', (object,), {'play': lambda: None})()
+    return player_death_sound
 
 
 class Player(pygame.Rect):
@@ -72,7 +82,7 @@ class Player(pygame.Rect):
         
     def die(self) -> None:
         """Handle player death, decrement lives, and reset position."""
-        player_death_sound.play()
+        _get_death_sound().play()
         self.lives -= 1
         self.x = PLAYER_X
         self.y = PLAYER_Y

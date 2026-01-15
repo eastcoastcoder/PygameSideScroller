@@ -8,8 +8,18 @@ from Constants import COLOR_BULLET, SIZE_BLOCK, SIZE_SCREEN_X, RED
 
 __author__ = "Joshua Sonnenberg and Ethan Richardson"
 
-pygame.mixer.init(44100, -16, 2, 2048)
-enemy_death_sound = pygame.mixer.Sound('Enemy_Death.wav')
+# Lazy load sound to avoid blocking browser initialization
+enemy_death_sound = None
+
+def _get_enemy_death_sound():
+    """Lazily load enemy death sound."""
+    global enemy_death_sound
+    if enemy_death_sound is None:
+        try:
+            enemy_death_sound = pygame.mixer.Sound('Enemy_Death.wav')
+        except:
+            enemy_death_sound = type('obj', (object,), {'play': lambda: None})()
+    return enemy_death_sound
 
 
 class BulletManager:
@@ -51,7 +61,7 @@ class BulletManager:
         for enemy in enemy_manager.enemies:
             for bullet in self.bullets:
                 if bullet.colliderect(enemy):
-                    enemy_death_sound.play()
+                    _get_enemy_death_sound().play()
                     enemy.health -= 1
                     print("TAKING DAMAGE")
                     if enemy.health == 0:

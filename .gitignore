@@ -42,3 +42,8 @@ wheels/
 *.jpg
 *.png
 *.bmp
+
+# Pygbag build output
+build/
+web/
+*.zip

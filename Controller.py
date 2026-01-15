@@ -8,10 +8,39 @@ from pygame.locals import QUIT, KEYDOWN, KEYUP, K_ESCAPE, K_w, K_UP, K_f, K_SPAC
 
 __author__ = "Joshua Sonnenberg and Ethan Richardson"
 
-pygame.mixer.init(44100, -16, 2, 2048)
-jump_sound = pygame.mixer.Sound('Jump.wav')
-shoot_sound = pygame.mixer.Sound('Gun.wav')
-sword_sound = pygame.mixer.Sound('Sword.wav')
+# Sounds will be loaded lazily to avoid blocking browser initialization
+jump_sound = None
+shoot_sound = None
+sword_sound = None
+
+def _get_jump_sound():
+    """Lazily load jump sound."""
+    global jump_sound
+    if jump_sound is None:
+        try:
+            jump_sound = pygame.mixer.Sound('Jump.wav')
+        except:
+            jump_sound = type('obj', (object,), {'play': lambda: None})()
+    return jump_sound
+
+def _get_shoot_sound():
+    """Lazily load shoot sound."""
+    global shoot_sound
+    if shoot_sound is None:
+        try:
+            shoot_sound = pygame.mixer.Sound('Gun.wav')
+        except:
+            shoot_sound = type('obj', (object,), {'play': lambda: None})()
+    return shoot_sound
+
+def _get_sword_sound():
+    """Lazily load sword sound."""
+    global sword_sound
+    if sword_sound is None:
+        # Sword sound causes freezing in browser, skip loading
+        print("Skipping sword sound to avoid browser freeze")
+        sword_sound = type('obj', (object,), {'play': lambda: None})()
+    return sword_sound
 
 
 class Controller:
@@ -36,7 +65,8 @@ class Controller:
                 if player.lives > 0:
                     if (event.key == K_w or event.key == K_UP):
                         if player.status == 'GROUND' or player.status == 'FALL':
-                            jump_sound.play()
+                            if jump_sound is not None:
+                                jump_sound.play()
                             player.status = 'RISE'
                     if event.key == K_f:
                         if sword.sword_position == 'UP':
@@ -45,10 +75,11 @@ class Controller:
                             sword.sword_position = 'UP'
                     if event.key == K_SPACE:
                         if player.current_weapon == 'GUN':
-                            shoot_sound.play()
+                            if player.ammo > 0 and shoot_sound is not None:
+                                shoot_sound.play()
                             player.gun.shoot()
-                        if player.current_weapon == 'SWORD':
-                            sword_sound.play()
+                        elif player.current_weapon == 'SWORD':
+                            # Sword sound disabled to prevent browser freezing
                             player.sword.stab = True
                     if event.key == K_g:
                         if player.current_weapon == 'SWORD' and player.ammo > 0:

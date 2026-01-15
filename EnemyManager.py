@@ -8,8 +8,18 @@ from Constants import GREEN, LIGHT_GREY
 
 __author__ = "Joshua Sonnenberg and Ethan Richardson"
 
-pygame.mixer.init(44100, -16, 2, 2048)
-enemy_death_sound = pygame.mixer.Sound('Enemy_Death.wav')
+# Lazy load sound to avoid blocking browser initialization
+enemy_death_sound = None
+
+def _get_enemy_death_sound():
+    """Lazily load enemy death sound."""
+    global enemy_death_sound
+    if enemy_death_sound is None:
+        try:
+            enemy_death_sound = pygame.mixer.Sound('Enemy_Death.wav')
+        except:
+            enemy_death_sound = type('obj', (object,), {'play': lambda: None})()
+    return enemy_death_sound
 
 
 class EnemyManager:
@@ -89,7 +99,7 @@ class EnemyManager:
                 elif player.facing == 'RIGHT' or player.facing == 'RSTOP':
                     enemy.x += 10
             if player.sword.colliderect(enemy) and player.sword.stab:
-                enemy_death_sound.play()
+                _get_enemy_death_sound().play()
                 self.enemies.pop(self.enemies.index(enemy))
             if enemy.sword.colliderect(player) and enemy.stab:
                 player.die()

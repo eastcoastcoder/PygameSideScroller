@@ -1,0 +1,13 @@
+# Pygbag configuration
+# This file configures how Pygbag loads and runs the game
+
+# Auto-start the Python code immediately
+autorun = 1
+
+# Use main.py as entry point
+main = "main.py"
+
+# Window configuration
+width = 800
+height = 600
+title = "Pygame Side Scroller"

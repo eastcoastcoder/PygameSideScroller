@@ -20,4 +20,4 @@ pip install -r requirements.txt
 echo ""
 echo "Setup complete!"
 echo "To run the game, use: ./run.sh"
-echo "Or manually: source venv/bin/activate && python Main.py"
+echo "Or manually: source venv/bin/activate && python main.py"

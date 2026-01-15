@@ -18,7 +18,7 @@ Or manually:
 
 ```bash
 source venv/bin/activate
-python Main.py
+python main.py
 ```
 
 ## Development Workflow
@@ -110,7 +110,7 @@ SCREEN_WIDTH: Final[int] = 800
 
 ### Main Components
 
-1. **Main.py**: Entry point, initializes pygame and starts game loop
+1. **main.py**: Entry point, initializes pygame and starts game loop
 2. **GameLoop.py**: Main game loop, handles game state
 3. **Player.py**: Player character with movement and combat
 4. **EnemyManager.py**: Spawns and manages all enemies

@@ -14,6 +14,7 @@ A side-scrolling action game built with Python and Pygame.
 
 - Python 3.8 or higher
 - pygame 2.0.0 or higher
+- pygbag 0.8.7 or higher (for web deployment)
 
 ## Installation
 
@@ -39,10 +40,47 @@ pip install -r requirements.txt
 
 ## Running the Game
 
+### Desktop Version
+
 Activate the virtual environment and run:
 
 ```bash
 source venv/bin/activate  # On Windows: venv\Scripts\activate
+python main.py
+```
+
+Or use the convenience script: `./run.sh`
+
+### Web Browser Version (WebAssembly)
+
+This game can run in a web browser using Pygbag and WebAssembly!
+
+**Option 1: Build and test locally**
+
+```bash
+# Build for web
+./build_web.sh
+
+# Test locally (requires Python's http.server)
+python -m http.server 8000 --directory build/web
+# Then open http://localhost:8000 in your browser
+```
+
+**Option 2: Deploy to GitHub Pages or itch.io**
+
+```bash
+# Build creates a build/web directory
+./build_web.sh
+
+# The build/web folder contains all files needed for deployment
+# Upload to GitHub Pages, itch.io, or any static hosting service
+```
+
+**Option 3: Quick test with pygbag server**
+
+```bash
+pygbag .
+# Opens automatically at http://localhost:8000n/activate  # On Windows: venv\Scripts\activate
 python Main.py
 ```
 
