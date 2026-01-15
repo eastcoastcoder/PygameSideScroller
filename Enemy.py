@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-"""Enemy"""
+"""Enemy module: enemy entity behavior."""
 
 import pygame
 from Sword import Sword
@@ -9,10 +9,15 @@ __author__ = "Joshua Sonnenberg and Ethan Richardson"
 
 
 class Enemy(pygame.Rect):
-    """Handles enemy entities"""
+    """Represents an enemy entity with movement and combat."""
 
-    def __init__(self, x, y):
-        """Constructor"""
+    def __init__(self, x: int, y: int) -> None:
+        """Initialize an enemy.
+        
+        Args:
+            x: The x-coordinate position.
+            y: The y-coordinate position.
+        """
         super(Enemy, self).__init__(x, y, 20, 40)
         self.facing = 'LEFT'
         self.health = 2
@@ -22,8 +27,8 @@ class Enemy(pygame.Rect):
         
         self.stab = True
         
-    def move(self):
-        """Checks and updates enemy movement"""
+    def move(self) -> None:
+        """Update enemy movement based on facing direction."""
         if self.facing == 'LEFT':
             self.x -= 3
         elif self.facing == 'RIGHT':

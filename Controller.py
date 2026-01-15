@@ -1,9 +1,12 @@
-_author_ = 'Joshua and Ethan'
+#!/usr/bin/env python
+"""Controller module: handles user input."""
 
 import sys
+from typing import Any
 import pygame
-from pygame.locals import *
-from Constants import *
+from pygame.locals import QUIT, KEYDOWN, KEYUP, K_ESCAPE, K_w, K_UP, K_f, K_SPACE, K_g, K_a, K_LEFT, K_d, K_RIGHT
+
+__author__ = "Joshua Sonnenberg and Ethan Richardson"
 
 pygame.mixer.init(44100, -16, 2, 2048)
 jump_sound = pygame.mixer.Sound('Jump.wav')
@@ -12,8 +15,17 @@ sword_sound = pygame.mixer.Sound('Sword.wav')
 
 
 class Controller:
+    """Handles keyboard input and game controls."""
 
-    def get_input(self, key, player, levelloader, sword):
+    def get_input(self, key: Any, player: Any, levelloader: Any, sword: Any) -> None:
+        """Process keyboard input and update game state.
+        
+        Args:
+            key: The current key state from pygame.key.get_pressed().
+            player: The player instance.
+            levelloader: The level loader instance.
+            sword: The sword instance.
+        """
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()

@@ -1,23 +1,28 @@
 #!/usr/bin/env python
-"""Player Class"""
+"""Sword module: melee weapon entity."""
 
 import pygame
-from Constants import *
-from BulletManager import *
-from LevelLoader import *
-from Player import *
+from Constants import SWORD_WID, SWORD_HT, STAB_OFFSET
+
 __author__ = "Joshua Sonnenberg and Ethan Richardson"
 
 
 class Sword(pygame.Rect):
-    def __init__(self, entity):
+    """Represents a sword weapon attached to an entity."""
+    
+    def __init__(self, entity) -> None:
+        """Initialize the sword.
+        
+        Args:
+            entity: The entity (player or enemy) that owns this sword.
+        """
         super(Sword, self).__init__(entity.x+10, entity.y+10, SWORD_WID, SWORD_HT)
         self.entity = entity
         self.stab = False
         self.sword_position = 'UP'
         
-    def update(self):
-        """Updates sword location on screen"""
+    def update(self) -> None:
+        """Update sword position based on entity position and facing direction."""
         if self.entity.facing == 'RIGHT' or self.entity.facing == 'RSTOP':
             self.x = self.entity.x+10
             if self.stab:

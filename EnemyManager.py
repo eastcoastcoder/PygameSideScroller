@@ -1,30 +1,53 @@
-import LevelLoader
-from Enemy import *
-from Constants import *
-from BulletManager import enemy_death_sound
+#!/usr/bin/env python
+"""EnemyManager module: manages all enemy entities."""
 
-__author__ = 'Joshua and Ethan'
+from typing import List
+import pygame
+from Enemy import Enemy
+from Constants import GREEN, LIGHT_GREY
+
+__author__ = "Joshua Sonnenberg and Ethan Richardson"
+
+pygame.mixer.init(44100, -16, 2, 2048)
+enemy_death_sound = pygame.mixer.Sound('Enemy_Death.wav')
 
 
-class EnemyManager():
-    """Handles Enemy enemies"""
+class EnemyManager:
+    """Manages all enemy entities in the game."""
 
-    def __init__(self, surface):
-        """Constructor"""
+    def __init__(self, surface: pygame.Surface) -> None:
+        """Initialize the enemy manager.
+        
+        Args:
+            surface: The pygame surface to draw on.
+        """
         self.enemies = []
         self.surface = surface
         self.clock = pygame.time.Clock()
 
-    def remove(self, index):
-        """Removes entity"""
+    def remove(self, index: int) -> None:
+        """Remove an enemy by index.
+        
+        Args:
+            index: The index of the enemy to remove.
+        """
         self.enemies.pop(index)
 
-    def spawn(self, x_coord, y_coord):
-        """Spawns entity"""
+    def spawn(self, x_coord: int, y_coord: int) -> None:
+        """Spawn a new enemy at the specified coordinates.
+        
+        Args:
+            x_coord: The x-coordinate position.
+            y_coord: The y-coordinate position.
+        """
         self.enemies.append(Enemy(x_coord, y_coord))
 
-    def update(self, player):
-        """Updates entity movement"""
+    def update(self, player) -> None:
+        """Update all enemy behaviors and AI.
+        
+        Args:
+            player: The player instance for AI targeting.
+        """
         self.clock.tick()
         for enemy in self.enemies:
             distance = enemy.x - player.x
@@ -52,7 +75,12 @@ class EnemyManager():
         
         self.update_sword(player)
     
-    def update_sword(self, player):
+    def update_sword(self, player) -> None:
+        """Handle sword collision detection between player and enemies.
+        
+        Args:
+            player: The player instance.
+        """
         for enemy in self.enemies:
             # Parry
             if player.sword.colliderect(enemy.sword):
@@ -66,14 +94,18 @@ class EnemyManager():
             if enemy.sword.colliderect(player) and enemy.stab:
                 player.die()
                 
-    def draw(self):
-        """Draws enemies"""
+    def draw(self) -> None:
+        """Render all enemies and their swords."""
         for enemy in self.enemies:
             pygame.draw.rect(self.surface, GREEN, enemy, 0)
             enemy.sword.update()
             pygame.draw.rect(self.surface, LIGHT_GREY, enemy.sword, 0)
 
-    def level_shift(self, shift):
-        """Shifts enemies with level"""
+    def level_shift(self, shift: int) -> None:
+        """Shift all enemies when the level scrolls.
+        
+        Args:
+            shift: The amount to shift enemies by.
+        """
         for enemy in self.enemies:
             enemy.x -= shift

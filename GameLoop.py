@@ -1,10 +1,14 @@
 #!/usr/bin/env python
-"""GameLoop Class"""
+"""GameLoop module: main game loop and state management."""
 
-from Player import *
-from LevelLoader import *
-from EnemyManager import *
+import os
+import pygame
+from Player import Player
+from LevelLoader import LevelLoader
+from EnemyManager import EnemyManager
+from CollisionManager import CollisionManager
 from Controller import Controller
+from Constants import FPS, BLUE
 
 __author__ = "Joshua Sonnenberg and Ethan Richardson"
 
@@ -13,10 +17,14 @@ lose_message = game_font.render("You Lose", 1, (0, 0, 0))
 lives_message = game_font.render("Lives: ", 1, (255, 255, 255))
 
 class GameLoop:
-    """Game Loop"""
+    """Main game loop and state management."""
 
-    def __init__(self, surface):
-        """Constructor"""
+    def __init__(self, surface: pygame.Surface) -> None:
+        """Initialize the game loop.
+        
+        Args:
+            surface: The pygame surface to draw on.
+        """
         self.surface = surface
         self.clock = pygame.time.Clock()
         self.lives = 3
@@ -25,20 +33,20 @@ class GameLoop:
         self.is_paused = False
         self.level = 1
         
-    def new_game(self):
-        """Resets the Game"""
+    def new_game(self) -> None:
+        """Reset and restart the game."""
         if self.lives > 0:
             self.is_alive = True
             self.draw()
 
-    def draw(self):
-        """Contains main game loop"""
+    def draw(self) -> None:
+        """Run the main game loop."""
         background = pygame.image.load(os.path.join("sky.jpg"))
         controller = Controller()
         collide = CollisionManager()
         player = Player(self.surface)
         enemy_manager = EnemyManager(self.surface)
-        level = LevelLoader.LevelLoader(self.surface, enemy_manager)
+        level = LevelLoader(self.surface, enemy_manager)
         level.load(1)
 
         while self.is_alive:

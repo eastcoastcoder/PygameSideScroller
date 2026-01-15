@@ -1,18 +1,22 @@
 #!/usr/bin/env python
-"""Player Class"""
+"""Gun module: ranged weapon entity."""
 
 import pygame
-from Constants import *
-from BulletManager import *
-from LevelLoader import *
-from Player import *
+from Bullets import Bullets
 
 __author__ = "Joshua Sonnenberg and Ethan Richardson"
 
 
 class Gun(pygame.Rect):
+    """Represents a gun weapon attached to an entity."""
     
-    def __init__(self, entity, surface):
+    def __init__(self, entity, surface: pygame.Surface) -> None:
+        """Initialize the gun.
+        
+        Args:
+            entity: The entity (player) that owns this gun.
+            surface: The pygame surface to draw on.
+        """
         self.entity = entity
         super(Gun, self).__init__(entity.x+20, entity.y+10, 10, 5)
         self.ammoSideX = entity.x+30
@@ -20,8 +24,8 @@ class Gun(pygame.Rect):
         self.surface = surface
         self.entity = entity
     
-    def draw(self):
-        """Draws gun to screen"""
+    def draw(self) -> None:
+        """Update gun position and render it on screen."""
         if self.entity.facing == 'RIGHT' or self.entity.facing == 'RSTOP':
             self.x = self.entity.x+20
         elif self.entity.facing == 'LEFT' or self.entity.facing == 'LSTOP':
@@ -30,8 +34,8 @@ class Gun(pygame.Rect):
         self.y = self.entity.y+10           
         pygame.draw.rect(self.surface, (55, 55, 59), self, 0)
         
-    def shoot(self):
-        """Gun type attack function"""
+    def shoot(self) -> None:
+        """Fire a bullet if ammo is available, otherwise switch to sword."""
         if self.entity.ammo > 0:
             if self.entity.facing == 'RIGHT' or self.entity.facing == 'RSTOP':
                 self.ammoSideX = self.entity.x+30

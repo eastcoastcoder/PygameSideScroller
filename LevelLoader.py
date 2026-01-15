@@ -1,19 +1,26 @@
 #!/usr/bin/env python
-"""Final Project for CS391 Intro to GameDev with Python and Pygame"""
-import pygame, random
-from Constants import *
-from Terrain import *
-from EnemyManager import *
-from CollisionManager import *
+"""LevelLoader module: handles level loading and terrain management."""
+
+from typing import List, Tuple
+import pygame
+from Constants import SIZE_BLOCK, SIZE_SCREEN_X, SIZE_SCREEN_Y, COLOR_TERRAIN
+from Terrain import Terrain
+from EnemyManager import EnemyManager
+from CollisionManager import CollisionManager
 
 __author__ = "Joshua Sonnenberg and Ethan Richardson"
 
 
 class LevelLoader:
-    """Handles loading in maps"""
+    """Handles loading and managing game levels."""
 
-    def __init__(self, surface, enemy_manager):
-        """Constructor"""
+    def __init__(self, surface: pygame.Surface, enemy_manager: EnemyManager) -> None:
+        """Initialize the level loader.
+        
+        Args:
+            surface: The pygame surface to draw on.
+            enemy_manager: The enemy manager instance.
+        """
         self.surface = surface
         self.enemy_manager = enemy_manager
         self.terrain_objects = []
@@ -41,8 +48,12 @@ class LevelLoader:
                              "/SSSSSS//SSSSSSSSSSSSSSSXSSSSSSSSXSSSSSSSXSSSSSSXSSSXSSSSSS/" \
                              "////////////////////////////////////////////////////////////"
 
-    def load(self, level):
-        """Loads in level based on ASCII values"""
+    def load(self, level: int) -> None:
+        """Load a level from ASCII map representation.
+        
+        Args:
+            level: The level number to load.
+        """
         count_x = 0
         count_y = 0
         if level == 1:
@@ -69,8 +80,12 @@ class LevelLoader:
             if count_y == SIZE_SCREEN_Y:
                 break
 
-    def shift(self, speed):
-        """Updates map coordinates"""
+    def shift(self, speed: int) -> None:
+        """Shift terrain and enemies as the level scrolls.
+        
+        Args:
+            speed: The amount to shift by.
+        """
         for terrain in self.terrain_objects:
             terrain.x -= speed
         self.enemy_manager.level_shift(speed)
@@ -78,8 +93,17 @@ class LevelLoader:
         if self.counter == 1600:
             self.end_of_level = True
             
-    def check_collisions(self, rect_object, is_bullet):
-        """Checks collisions with terrain"""
+    def check_collisions(self, rect_object: pygame.Rect, is_bullet: bool):
+        """Check for collisions between an object and terrain.
+        
+        Args:
+            rect_object: The rectangle to check for collisions.
+            is_bullet: Whether the object is a bullet (returns bool) or not (returns list).
+            
+        Returns:
+            For bullets: True if collision detected, False otherwise.
+            For other objects: List [x_direction, y_direction] of collision.
+        """
         if not is_bullet:
             hit = [0, 0]
             for terrain in self.terrain_objects:
@@ -94,7 +118,8 @@ class LevelLoader:
                     flag = True
             return flag
                 
-    def draw_terrain(self):
+    def draw_terrain(self) -> None:
+        """Render all terrain blocks to the screen."""
         for terrain in self.terrain_objects:
             pygame.draw.rect(self.surface, COLOR_TERRAIN, terrain, 0)
             self.surface.blit(terrain.tile, (terrain.x, terrain.y))
