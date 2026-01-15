@@ -28,6 +28,10 @@ jobs:
           python -m pip install --upgrade pip
           pip install pygbag
 
+      - name: Clean previous build
+        run: |
+          rm -rf build/web build/web-cache
+
       - name: Build with Pygbag
         run: |
           mkdir -p build/web build/web-cache
