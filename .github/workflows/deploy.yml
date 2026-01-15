@@ -37,6 +37,10 @@ jobs:
           mkdir -p build/web build/web-cache
           pygbag --build --cdn https://pygame-web.github.io/archives/0.9/ .
 
+      - name: Inject GTM scripts
+        run: |
+          python inject_gtm.py
+
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:

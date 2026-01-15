@@ -12,7 +12,10 @@ fi
 
 # Build the web version
 echo "Running pygbag build..."
-pygbag --build .
+pygbag --build --cdn https://pygame-web.github.io/archives/0.9/ .
+
+echo "Injecting GTM scripts..."
+python3 inject_gtm.py
 
 echo ""
 echo "Build complete!"
