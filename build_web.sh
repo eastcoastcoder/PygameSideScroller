@@ -12,7 +12,7 @@ fi
 
 # Build the web version
 echo "Running pygbag build..."
-pygbag --build --cdn https://pygame-web.github.io/archives/0.9/ .
+pygbag --build .
 
 echo ""
 echo "Build complete!"
