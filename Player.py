@@ -44,7 +44,7 @@ class Player(pygame.Rect):
         self.sword = Sword(self)
 
         self.speed = 10
-        self.ammo = 6
+        self.ammo = 20
         self.status = 'GROUND'
         self.facing = 'RSTOP'
         self.current_weapon = 'GUN'
@@ -59,7 +59,7 @@ class Player(pygame.Rect):
             levelloader: The level loader instance for collision detection.
         """
         self.hit = levelloader.check_collisions(self, False)
-
+        # Apply horizontal movement
         if self.facing == 'LEFT':
             if self.x > PLAYER_WID:
                 self.x -= PLAYER_SPEED
@@ -75,8 +75,10 @@ class Player(pygame.Rect):
         """Update player jumping physics and state."""
         if self.status == 'RISE' and self.y > PLAYER_JUMP_HT-self.jump_offset:
             self.y -= PLAYER_GRAVITY
-        elif self.status == 'FALL' and self.y < SCREEN_HEIGHT-PLAYER_HT-GROUND_HEIGHT and self.status != 'GROUND':
+        elif self.status == 'FALL' and self.y < SCREEN_HEIGHT-PLAYER_HT-GROUND_HEIGHT:
             self.y += PLAYER_GRAVITY
+        elif self.y >= SCREEN_HEIGHT-PLAYER_HT-GROUND_HEIGHT:
+            self.status = 'GROUND'
         else:
             self.status = 'GROUND'
         

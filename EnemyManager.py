@@ -101,7 +101,7 @@ class EnemyManager:
             if player.sword.colliderect(enemy) and player.sword.stab:
                 _get_enemy_death_sound().play()
                 self.enemies.pop(self.enemies.index(enemy))
-            if enemy.sword.colliderect(player) and enemy.stab:
+            if enemy.sword.colliderect(player) and enemy.stab and player.lives != 0:
                 player.die()
                 
     def draw(self) -> None:

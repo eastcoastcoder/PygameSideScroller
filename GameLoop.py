@@ -70,8 +70,9 @@ class GameLoop:
             controller.get_input(pygame.key.get_pressed(), player, level, player.sword)
 
             if player.lives > 0:
-                player.move(level)
+                # Update jump before collision detection to get correct position
                 player.update_jump()
+                player.move(level)
                 pygame.draw.rect(self.surface, BLUE, player, 0)
                 player.bullet_manager.update_bullets(self.surface)
                 player.bullet_manager.check_hit(enemy_manager)

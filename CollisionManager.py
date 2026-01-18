@@ -65,11 +65,11 @@ class CollisionManager:
             1,-1  0,-1  -1,-1
         """
         if(one.facing != 'LSTOP' or one.facing != 'RSTOP'):
-            # Right Edge
+            # Right Edge - hit the left side of terrain while moving right
             if(hit[0] == -1):
                 one.x = two.x + two.width
                 one.x += 1
-            # Left Edge
+            # Left Edge - hit the right side of terrain while moving left
             elif(hit[0] == 1):
                 one.x = two.x - one.width
                 one.x -= 1
@@ -77,7 +77,7 @@ class CollisionManager:
             if(hit[1] == -1):
                 one.y = two.y + two.height
                 one.y += 5
-            # Top Edge
+            # Top Edge - landed on terrain from above
             elif(hit[1] == 1):
                 one.y = two.y - one.height
 
